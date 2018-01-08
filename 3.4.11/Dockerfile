@@ -3,7 +3,8 @@ FROM openjdk:8-jre-alpine
 # Install required packages
 RUN apk add --no-cache \
     bash \
-    su-exec
+    su-exec \
+    bc
 
 ENV ZOO_USER=zookeeper \
     ZOO_CONF_DIR=/conf \
@@ -14,7 +15,7 @@ ENV ZOO_USER=zookeeper \
     ZOO_INIT_LIMIT=5 \
     ZOO_SYNC_LIMIT=2 \
     ZOO_MAX_CLIENT_CNXNS=60
-
+    
 # Add a user and make dirs
 RUN set -ex; \
     adduser -D "$ZOO_USER"; \

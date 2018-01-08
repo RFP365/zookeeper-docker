@@ -29,7 +29,13 @@ fi
 
 # Write myid only if it doesn't exist
 if [[ ! -f "$ZOO_DATA_DIR/myid" ]]; then
-    echo "${ZOO_MY_ID:-1}" > "$ZOO_DATA_DIR/myid"
+    # This is specific to a Kubernetes statefulset, which adds a number to the
+    # end of the hostname for each pod created.
+    # If this ever gets implemented, we can drop this and default to the standard
+    # zookeeper image
+    # https://github.com/kubernetes/community/pull/147/files
+    echo "${HOSTNAME##*-} + 1" |  bc > "${ZOO_DATA_DIR}/myid"
+    # echo "${ZOO_MY_ID:-1}" > "$ZOO_DATA_DIR/myid"
 fi
 
 exec "$@"
